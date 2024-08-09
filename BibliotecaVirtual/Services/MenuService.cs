@@ -14,9 +14,9 @@ namespace BibliotecaVirtual.Services
 
         public void Show()
         {
-            int homeMenuIndex = HomeMenu();
+            int menuIndex = ShowMainMenu();
 
-            switch (homeMenuIndex)
+            switch (menuIndex)
             {
                 case 1:
                     {
@@ -27,15 +27,15 @@ namespace BibliotecaVirtual.Services
         }
 
         //Exibe o Menu Principal retornando o indíce escolhido pelo usuário
-        private int HomeMenu()
+        private int ShowMainMenu()
         {
-            return GenerateMenu("Menu Principal", new List<string> { "Livros Disponíveis", "Adicionar Livro", "Remover Livro", "Exibir Compras" });
+            return DisplayMenu("Menu Principal", new List<string> { "Livros Disponíveis", "Adicionar Livro", "Remover Livro", "Exibir Compras" });
         }
 
         //Exibe  os Livros que estão a venda, retornando o indíce escolhido pelo usuário.
-        private void BuyBookMenu(Book book)
+        private void ShowPurchaseOptions(Book book)
         {
-            int indexPayment = GenerateMenu(
+            int indexPayment = DisplayMenu(
                 $"Comprar: {book.Title}\n" +
                 $"Valor R${book.Price}", new List<string> { "Cartão" });
 
@@ -53,18 +53,18 @@ namespace BibliotecaVirtual.Services
         {
             List<string> bookList = _inventory.GetBookList().Values.Select(x => x.Title).ToList();
 
-            int indexChosenBook =  GenerateMenu("Livros Disponíveis", bookList);
+            int indexChosenBook = DisplayMenu("Livros Disponíveis", bookList);
 
             Book bookChoice = _inventory.GetBookAtIndex(indexChosenBook);
 
-            MenuChosenBook(bookChoice);
+            ShowBookOptions(bookChoice);
 
         }
 
         //Exibe o menu do livro escolhido
-        private void MenuChosenBook(Book book)
+        private void ShowBookOptions(Book book)
         {
-            int indexUserChoice = GenerateMenu($"Livro: {book.Title}", new List<string> { "Exibir Detalhes", "Comprar Livro" });
+            int indexUserChoice = DisplayMenu($"Livro: {book.Title}", new List<string> { "Exibir Detalhes", "Comprar Livro" });
 
             switch (indexUserChoice)
             {
@@ -72,14 +72,14 @@ namespace BibliotecaVirtual.Services
                     book.Details();
                     break;
                 case 2:
-                    BuyBookMenu(book);
+                    ShowPurchaseOptions(book);
                     break;
             }
         }
 
         //Método cria um menu automático
         //Parâmetros => menuTitle = Titulo do Menu criado, menuItens = Lista com cada opção do menu 
-        private int GenerateMenu(string menuTitle, List<string> menuItens)
+        private int DisplayMenu(string menuTitle, List<string> menuItens)
         {
             int userChoice;
 

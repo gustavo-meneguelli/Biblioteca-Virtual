@@ -1,4 +1,5 @@
-﻿using BibliotecaVirtual.Services;
+﻿using BibliotecaVirtual.Models;
+using BibliotecaVirtual.Services;
 
 namespace BibliotecaVirtual
 {
@@ -6,6 +7,13 @@ namespace BibliotecaVirtual
     {
         static void Main(string[] args)
         {
+            Inventory inventory = new Inventory();
+            User firstUser = new User("Gustavo");
+
+            MenuService menuService = new MenuService(firstUser, inventory);
+
+            menuService.Show();
+
         }
     }
 }

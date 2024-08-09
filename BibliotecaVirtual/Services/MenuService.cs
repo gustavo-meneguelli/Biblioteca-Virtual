@@ -1,26 +1,85 @@
 ﻿using BibliotecaVirtual.Models;
 
-namespace BibliotecaVirtual.Interfaces
+namespace BibliotecaVirtual.Services
 {
-    internal class UserInterface
+    internal class MenuService
     {
-        //Exibe o Menu Principal retornando o indíce escolhido pelo usuário
-        public int MainMenu()
+        private readonly Inventory _inventory;
+        private readonly User _user;
+        public MenuService(User user, Inventory inventory)
         {
-            return MenuGenerator("Menu Principal", new List<string> { "Comprar Livro", "Adicionar Livro", "Remover Livro", "Exibir Compras" });
+            _inventory = inventory;
+            _user = user;
+        }
+
+        public void Show()
+        {
+            int homeMenuIndex = HomeMenu();
+
+            switch (homeMenuIndex)
+            {
+                case 1:
+                    {
+                        ShowAvailableBooks();
+                        break;
+                    }
+            }
+        }
+
+        //Exibe o Menu Principal retornando o indíce escolhido pelo usuário
+        private int HomeMenu()
+        {
+            return GenerateMenu("Menu Principal", new List<string> { "Livros Disponíveis", "Adicionar Livro", "Remover Livro", "Exibir Compras" });
         }
 
         //Exibe  os Livros que estão a venda, retornando o indíce escolhido pelo usuário.
-        public int BuyBookMenu()
+        private void BuyBookMenu(Book book)
         {
-            Inventory inventory = new Inventory();
-            List<string> bookList = inventory.GetBookList().Values.Select(x => x.Title).ToList();
+            int indexPayment = GenerateMenu(
+                $"Comprar: {book.Title}\n" +
+                $"Valor R${book.Price}", new List<string> { "Cartão" });
 
-            return MenuGenerator("Comprar Livro", bookList);
+            switch (indexPayment)
+            {
+                case 1:
+                    //Pagamento Cartão
+                    new PaymentService(new CreditCardPayment(_user), book).Pay();
+                    break;
+            }
         }
+
+        //Exibe os livros disponíveis
+        private void ShowAvailableBooks()
+        {
+            List<string> bookList = _inventory.GetBookList().Values.Select(x => x.Title).ToList();
+
+            int indexChosenBook =  GenerateMenu("Livros Disponíveis", bookList);
+
+            Book bookChoice = _inventory.GetBookAtIndex(indexChosenBook);
+
+            MenuChosenBook(bookChoice);
+
+        }
+
+        //Exibe o menu do livro escolhido
+        private void MenuChosenBook(Book book)
+        {
+            int indexUserChoice = GenerateMenu($"Livro: {book.Title}", new List<string> { "Exibir Detalhes", "Comprar Livro" });
+
+            switch (indexUserChoice)
+            {
+                case 1:
+                    book.Details();
+                    break;
+                case 2:
+                    BuyBookMenu(book);
+                    break;
+            }
+        }
+
         //Método cria um menu automático
         //Parâmetros => menuTitle = Titulo do Menu criado, menuItens = Lista com cada opção do menu 
-        private int MenuGenerator(string menuTitle, List<string> menuItens)
+        private int GenerateMenu(string menuTitle, List<string> menuItens)
         {
             int userChoice;
 
@@ -29,7 +88,7 @@ namespace BibliotecaVirtual.Interfaces
                 Console.Clear();
 
                 Console.WriteLine("----------------------------");
-                Console.WriteLine($"    {menuTitle}            ");
+                Console.WriteLine($"{menuTitle}                ");
                 Console.WriteLine("----------------------------");
 
                 for (int i = 0; i < menuItens.Count; i++)

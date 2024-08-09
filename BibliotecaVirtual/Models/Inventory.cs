@@ -22,5 +22,6 @@
         }
 
         public Dictionary<int, Book> GetBookList() => BookList;
+        public Book GetBookAtIndex(int index) => BookList[index];
     }
 }

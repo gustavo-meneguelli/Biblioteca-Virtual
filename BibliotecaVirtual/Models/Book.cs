@@ -1,4 +1,6 @@
-﻿namespace BibliotecaVirtual.Models
+﻿using System.Runtime.InteropServices.Marshalling;
+
+namespace BibliotecaVirtual.Models
 {
     internal class Book
     {
@@ -11,6 +13,16 @@
             Title = title;
             Author = author;
             Price = price;
+        }
+        public void Details()
+        {
+            Console.WriteLine("--------------------------");
+            Console.WriteLine($"Titulo: {Title}");
+            Console.WriteLine($"Autor: {Author}");
+            Console.WriteLine($"Valor R${Price}");
+            Console.WriteLine("--------------------------");
+            Console.WriteLine("Pressione qualquer tecla para continuar...");
+            Console.ReadKey();
         }
     }
 }

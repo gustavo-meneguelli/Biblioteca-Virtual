@@ -1,0 +1,59 @@
+# Pasta Build e Arquivos Binários
+bin/
+obj/
+
+# Configurações de Usuário do Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Arquivos de Logs e Cache
+*.log
+**/logs/
+*.cache
+*.temp
+
+# Diretório de Publicação
+publish/
+publish_profiles/
+
+# Arquivos de Configuração de IDE
+.idea/
+.vscode/
+
+# Arquivos de Backup
+*.bak
+*.old
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Arquivos de Teste
+TestResults/
+*.trx
+*.coverage
+
+# Arquivos do NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos de Deploy
+*.deploy
+
+# Arquivos de Configuração de Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Arquivos de Integração Contínua
+!/.github
